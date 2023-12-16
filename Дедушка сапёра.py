@@ -4,21 +4,21 @@ import pygame
 
 
 class Board:
-    def __init__(self, width: int, height: int):
+    def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.board = [[0] * width for i in range(height)]
+        self.board = [[0] * width for _ in range(height)]
         self.next = 'red'
         self.left = 10
         self.up = 10
         self.cell_size = 30
 
-    def set_view(self, left: int, top: int, cell_size: int):
+    def set_view(self, left, top, cell_size):
         self.left = left
         self.up = top
         self.cell_size = cell_size
 
-    def render(self, screen: pygame.Surface):
+    def render(self, screen):
         font = pygame.font.Font(None, self.cell_size - 7)
         for y in range(self.height):
             for x in range(self.width):
@@ -37,7 +37,7 @@ class Board:
                     text_y = self.up + y * self.cell_size + 3
                     screen.blit(text, (text_x, text_y))
 
-    def get_cell(self, mouse_pos: '(int, int)'):
+    def get_cell(self, mouse_pos):
         x, y = mouse_pos
         x -= self.left
         y -= self.up
@@ -47,14 +47,14 @@ class Board:
             return None
         return result_y, result_x
 
-    def get_click(self, mouse_pos: tuple[int, int]):
+    def get_click(self, mouse_pos):
         cell_coords = self.get_cell(mouse_pos)
         if self.on_click and cell_coords:
             self.on_click(cell_coords)
 
 
 class Minesweeper(Board):
-    def __init__(self, width: int, height: int, mines_count: int):
+    def __init__(self, width, height, mines_count):
         super().__init__(width, height)
         if mines_count >= width * height:
             self.board = [[10] * width for _ in range(height)]
@@ -127,7 +127,7 @@ class Minesweeper(Board):
             if left is not None and self.board[y][left] == -1:
                 self.open_cell(y, left)
 
-    def on_click(self, cell_coords: tuple[int, int]):
+    def on_click(self, cell_coords):
         self.open_cell(*cell_coords)
 
 
